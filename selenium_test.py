@@ -15,8 +15,15 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 # 打开 Google 网站
 driver.get("https://www.google.com")
 
-# 获取网页标题并打印
-print("Page Title:", driver.title)
+# 获取页面的所有文本内容
+page_text = driver.find_element("tag name", "body").text
+
+# 打印页面文本（调试用）
+print(page_text)
+
+# 将页面文本保存到 output.txt 文件中
+with open("output.txt", "w") as file:
+    file.write(page_text)
 
 # 关闭浏览器
 driver.quit()
