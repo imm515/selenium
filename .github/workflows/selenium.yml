@@ -1,8 +1,8 @@
 name: Selenium Test Workflow
 
-# 修改触发条件为手动触发
+# 手动触发工作流
 on:
-  workflow_dispatch:  # 手动触发工作流
+  workflow_dispatch:
 
 jobs:
   selenium-test:
@@ -11,13 +11,23 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3  # 检出代码
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.9  # 配置 Python 版本
+
     - name: Install Dependencies
       run: |
         sudo apt-get update  # 更新软件包列表
         pip install selenium webdriver-manager  # 安装所需依赖
+
     - name: Run Selenium Test
       run: python selenium_test.py  # 运行测试
+
+    - name: Upload Text File
+      uses: actions/upload-artifact@v3
+      with:
+        name: output-text
+        path: output.txt  # 上传输出的文本文件
+
