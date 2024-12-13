@@ -1,33 +1,35 @@
 name: Selenium Test Workflow
 
-# 手动触发工作流
 on:
   workflow_dispatch:
 
 jobs:
   selenium-test:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 系统的虚拟机
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3  # 检出代码
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9  # 配置 Python 版本
+        python-version: 3.9
 
     - name: Install Dependencies
       run: |
-        sudo apt-get update  # 更新软件包列表
-        pip install selenium webdriver-manager  # 安装所需依赖
+        sudo apt-get update
+        pip install selenium webdriver-manager
 
     - name: Run Selenium Test
-      run: python selenium_test.py  # 运行测试
+      run: python selenium_test.py
 
-    - name: Upload Text File
-      uses: actions/upload-artifact@v3
-      with:
-        name: output-text
-        path: output.txt  # 上传输出的文本文件
-
+    - name: Commit and Push output.txt to main branch
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add output.txt
+        git commit -m "Update output.txt with new content"
+        git push origin HEAD:main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
