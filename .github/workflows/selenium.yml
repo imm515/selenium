@@ -1,26 +1,23 @@
 name: Selenium Test Workflow
 
+# 修改触发条件为手动触发
 on:
-  push:
-    branches:
-      - main  # 每次推送到 main 分支时触发
+  workflow_dispatch:  # 手动触发工作流
 
 jobs:
   selenium-test:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 环境
+    runs-on: ubuntu-latest  # 使用 Ubuntu 系统的虚拟机
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3  # 检出代码
-
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9  # 安装 Python 3.9
-
+        python-version: 3.9  # 配置 Python 版本
     - name: Install Dependencies
       run: |
-        pip install selenium webdriver-manager  # 安装 Selenium 和 WebDriver 管理工具
-
+        sudo apt-get update  # 更新软件包列表
+        pip install selenium webdriver-manager  # 安装所需依赖
     - name: Run Selenium Test
-      run: python selenium_test.py  # 运行 Selenium 测试脚本
+      run: python selenium_test.py  # 运行测试
